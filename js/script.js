@@ -245,10 +245,9 @@
 	form.style.margin = '20px 50px 50px';
 	labelName.appendChild(labelNameText);
 	formButton.appendChild(formButtonText);
-//	formButton.setAttribute("type", "submit");
 	formButton.addEventListener("click", myFunction);
 	formButtonRes.appendChild(formButtonRestext);
-	formButtonRes.setAttribute("type", "reset");
+	formButtonRes.addEventListener("click", reset);
 	labelLastName.appendChild(labelLastNameText);
 	labelEmail.appendChild(labelEmailText);
 	labelImg.appendChild(labelImgText);
@@ -284,7 +283,7 @@
 	inputImg.setAttribute("placeholder", "lint for image");
 	inputEmail.setAttribute("placeholder", "email");
 	inputSkills.setAttribute("placeholder", "your skills");
-
+	inputName.setAttribute("required", "")
 
 
 	
@@ -313,12 +312,19 @@
 		var obj = {};
 		for (let i = 0; i < x.length; i++) {
 			var item = x.elements.item(i);
+			if(item.value === "") {
+				return alert(`${item.name} is empty`);
+			}
         	obj[item.name] = item.value;
 		}
 		console.log(obj);
 		students.push(obj);
 		console.log(students);
 		renderStudents(obj);
+		x.reset();
+	}
+	function reset() {
+		return document.forms[0].reset();
 	}
     container.appendChild(table);
 
