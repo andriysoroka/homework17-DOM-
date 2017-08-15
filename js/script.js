@@ -164,10 +164,6 @@
     var container = document.getElementById("container");
     var titles = ['name', 'email', 'img', 'skills'];
 	table.setAttribute("class", "table table-hover");
-//	table.addEventListener("click", function(e){
-//		alert(e.target.innerHTML);
-//	});
-//	table.setAttribute("onclick", "alertStud(event)");
     
 	for(let i = 0; i < students.length; i++) {
 		var stud = students[i];
