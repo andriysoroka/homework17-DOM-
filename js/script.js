@@ -169,35 +169,39 @@
 //	});
 //	table.setAttribute("onclick", "alertStud(event)");
     
-    for(let i = 0; i < students.length; i++) {
-        let student = document.createElement("tr"),
-            studImg = document.createElement("img"),
-            buttonEdit = document.createElement("button"),
-			buttonRemove = document.createElement("button"),	
-            obj = {
-                name: `${students[i].name} ${students[i].lastName}`,
-                email: students[i].email,
-                img: students[i].img,
-                skills: students[i].skills.toString()
-            };
-        titles.forEach(function(item) {
-            let td = document.createElement("td");
-            if (item === "img") {
-                studImg.setAttribute("src", students[i].img);
-                td.appendChild(studImg);
-                studImg.style.height = '100px';
-            } else {
-                let text = document.createTextNode(obj[item]);
-                td.appendChild(text);
-            }
-			buttonEdit.setAttribute("class", "glyphicon glyphicon-edit")
-			buttonRemove.setAttribute("class", "glyphicon glyphicon-trash")
-            student.appendChild(td);
-			student.appendChild(buttonRemove);
-			student.appendChild(buttonEdit);
-        })
-        table.appendChild(student);
-    }
+	for(let i = 0; i < students.length; i++) {
+		var stud = students[i];
+		function renderStudents(stud){
+			let student = document.createElement("tr"),
+				studImg = document.createElement("img"),
+				buttonEdit = document.createElement("button"),
+				buttonRemove = document.createElement("button"),
+				obj = {
+					name: `${stud.name} ${stud.lastName}`,
+					email: stud.email,
+					img: stud.img,
+					skills: stud.skills.toString()
+				};
+			titles.forEach(function(item) {
+				let td = document.createElement("td");
+				if (item === "img") {
+					studImg.setAttribute("src", stud.img);
+					td.appendChild(studImg);
+					studImg.style.height = '100px';
+				} else {
+					let text = document.createTextNode(obj[item]);
+					td.appendChild(text);
+				}
+				buttonEdit.setAttribute("class", "glyphicon glyphicon-edit")
+				buttonRemove.setAttribute("class", "glyphicon glyphicon-trash")
+				student.appendChild(td);
+				student.appendChild(buttonRemove);
+				student.appendChild(buttonEdit);
+			})
+			table.appendChild(student);
+		};
+		renderStudents(stud);
+	}
 	//if (table != null) { take name
         for (var i = 0; i < table.rows.length; i++) {
             for (var j = 0; j < table.rows[i].cells.length; j++)
@@ -212,6 +216,7 @@
     }
 // form
    	var form = document.createElement("form"),
+		formDiv = document.createElement("div"),
 		inputName = document.createElement("input"),
 		inputLastName = document.createElement("input"),
 		inputImg = document.createElement("input"),
@@ -240,8 +245,8 @@
 	form.style.margin = '20px 50px 50px';
 	labelName.appendChild(labelNameText);
 	formButton.appendChild(formButtonText);
-	formButton.setAttribute("type", "submit");
-	formButton.setAttribute("onclick", "myFunction()");
+//	formButton.setAttribute("type", "submit");
+	formButton.addEventListener("click", myFunction);
 	formButtonRes.appendChild(formButtonRestext);
 	formButtonRes.setAttribute("type", "reset");
 	labelLastName.appendChild(labelLastNameText);
@@ -251,13 +256,13 @@
 	inputName.setAttribute("type", "text");
 	inputName.setAttribute("name", "name");
 	inputLastName.setAttribute("type", "text");
-	inputLastName.setAttribute("name", "lstName");
+	inputLastName.setAttribute("name", "lastName");
 	inputImg.setAttribute("type", "text");
-	inputImg.setAttribute("type", "img");
+	inputImg.setAttribute("name", "img");
 	inputEmail.setAttribute("type", "text");
-	inputEmail.setAttribute("type", "email");
+	inputEmail.setAttribute("name", "email");
 	inputSkills.setAttribute("type", "text");
-	inputSkills.setAttribute("type", "text");
+	inputSkills.setAttribute("name", "skills");
 	form.setAttribute("class", "form");
 	divName.setAttribute("class", "form-group");
 	divLastName.setAttribute("class", "form-group");
@@ -269,15 +274,19 @@
 	inputImg.setAttribute("class", "form-control");
 	inputEmail.setAttribute("class", "form-control");
 	inputSkills.setAttribute("class", "form-control");
-	inputName.setAttribute("value", "value@dsa.com");
-	inputLastName.setAttribute("value", "value@dsa.com");
-	inputImg.setAttribute("value", "value@dsa.com");
-	inputEmail.setAttribute("value", "value@dsa.com");
-	inputSkills.setAttribute("value", "value@dsa.com");
-	form.setAttribute("id", "frm1");
-	
-	var some = document.createElement("div");
-	some.setAttribute("id", "demo");
+	inputName.setAttribute("value", "");
+	inputLastName.setAttribute("value", "");
+	inputImg.setAttribute("value", "");
+	inputEmail.setAttribute("value", "");
+	inputSkills.setAttribute("value", "");
+	inputName.setAttribute("placeholder", "name");
+	inputLastName.setAttribute("placeholder", "last name");
+	inputImg.setAttribute("placeholder", "lint for image");
+	inputEmail.setAttribute("placeholder", "email");
+	inputSkills.setAttribute("placeholder", "your skills");
+
+
+
 	
 	form.appendChild(divName);
 		divName.appendChild(labelName);
@@ -294,22 +303,23 @@
 	form.appendChild(divSkills);
 		divSkills.appendChild(labelSkills);
 		divSkills.appendChild(inputSkills);
-	form.appendChild(formButton);
-	form.appendChild(formButtonRes);
-    container.appendChild(form);
-	container.appendChild(some);
+	formDiv.appendChild(form);
+	formDiv.appendChild(formButton);
+	formDiv.appendChild(formButtonRes);
+    container.appendChild(formDiv);
 	
 	function myFunction() {
-    var x = document.getElementById("frm1");
-    var text = "";
-    var i;
-    for (i = 0; i < x.length ;i++) {
-        text += x.elements[i].value + "<br>";
-    }
-    document.getElementById("demo").innerHTML = text;
-}
-//	var info = document.getElementsByClassName("form").value;
-//	console.log(info);
+		var x = document.forms[0];
+		var obj = {};
+		for (let i = 0; i < x.length; i++) {
+			var item = x.elements.item(i);
+        	obj[item.name] = item.value;
+		}
+		console.log(obj);
+		students.push(obj);
+		console.log(students);
+		renderStudents(obj);
+	}
     container.appendChild(table);
 
 })()
